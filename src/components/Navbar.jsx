@@ -16,7 +16,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const navLinks = [
   { name: "Home", path: "/" },
   { name: "Players", path: "/players" },
-  { name: "Tournaments", path: "/tournaments" },
+  { name: "Add-Player", path: "/add-player" },
   { name: "Teams", path: "/teams" },
   { name: "Live Match", path: "/live" },
 ];
@@ -134,16 +134,20 @@ export default function Navbar() {
           {/* Login Button */}
           <motion.button
             whileHover={{
-              scale: 1.05,
-              y: -2,
+                scale: 1.05,
+                y: -2,
             }}
             whileTap={{ scale: 0.95 }}
             className="rounded-2xl border border-cyan-500/30 bg-cyan-500/10 px-6 py-3 text-sm font-semibold text-cyan-400 transition-all duration-300 hover:bg-cyan-500/20"
           >
+            <Link href={'/login'}>
             Login
+          </Link>
           </motion.button>
 
           {/* Signup Button */}
+      
+        
           <motion.button
             whileHover={{
               scale: 1.05,
@@ -152,7 +156,9 @@ export default function Navbar() {
             whileTap={{ scale: 0.95 }}
             className="group flex items-center gap-2 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-600 px-6 py-3 text-sm font-semibold text-white shadow-2xl shadow-cyan-500/20 transition-all duration-300"
           >
+            <Link href={'/singup'}>
             Sign Up
+            </Link>
 
             <ChevronRight
               size={18}
@@ -160,6 +166,7 @@ export default function Navbar() {
             />
           </motion.button>
         </motion.div>
+      
 
         {/* Mobile Menu Button */}
         <motion.button

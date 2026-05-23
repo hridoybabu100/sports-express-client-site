@@ -8,6 +8,7 @@ export default function Home() {
   return (
    <main>
     <Banner></Banner>
+  
     <PlayerPurchaseOffer></PlayerPurchaseOffer>
     <Feature></Feature>
     <StartSection></StartSection>
