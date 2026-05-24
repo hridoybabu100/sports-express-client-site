@@ -13,9 +13,39 @@ import {
   TextArea,
 } from "@heroui/react";
 import Image from "next/image";
+import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
 
 const AddPlayerForm = () => {
   const [image, setImage] = useState("");
+
+
+  const onSubmit = async(e) => {
+    e.preventDefault();
+    // console.log('e is a e', e);
+
+    const formData = new FormData(e.target);
+    const newPlayer = Object.fromEntries(formData.entries());
+    // console.log('New Player', newPlayer);
+
+    const res = await fetch("http://localhost:5000/sports", {
+        method : "POST",
+        headers : {
+            "Content-Type" : "application/json"
+        },
+        body : JSON.stringify(newPlayer)
+    });
+
+    const data = await res.json();
+    // console.log('New Player is a', data);
+    if( data){
+        toast.success("Player added Sucessfully Complete")
+        redirect('/palyer')
+    }
+    
+    
+    
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#050816] px-4 py-10 relative overflow-hidden">
@@ -54,7 +84,7 @@ const AddPlayerForm = () => {
         )}
 
         {/* Form */}
-        <Form className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-5">
 
           {/* Name */}
           <TextField name="name" isRequired>
@@ -89,7 +119,7 @@ const AddPlayerForm = () => {
             <Label className="text-white">Image URL</Label>
             <Input
               placeholder="https://example.com/image.jpg"
-              onChange={(e) => setImage(e.target.value)}
+              
             />
             <Description className="text-gray-400 text-xs">
               Paste a valid image URL for preview
