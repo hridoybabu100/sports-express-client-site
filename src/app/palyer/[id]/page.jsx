@@ -170,10 +170,10 @@ const Detailspage = async ({ params }) => {
                   </Button>
                 </Link>
                 {/* Edit Button */}
-             <EditButton></EditButton>
+             <EditButton player={player}></EditButton>
 
                 {/* Delete Button */}
-              <DeleteButton></DeleteButton>
+              <DeleteButton player={player}></DeleteButton>
               </div>
             </div>
           </div>

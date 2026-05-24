@@ -2,8 +2,31 @@
 
 import {TriangleExclamation} from "@gravity-ui/icons";
 import {AlertDialog, Button} from "@heroui/react";
+import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
 
-export function DeleteButton() {
+export function DeleteButton({player}) {
+
+  const {_id, name} = player;
+  
+
+  const delteHandle = async() => {
+    const res = await fetch(`http://localhost:5000/sports/${_id}`,{
+      method : "DELETE",
+      headers : {
+        "Content-Type" : "application/json"
+       },
+
+    })
+    const data = await res.json();
+    if(data){
+      toast.success(`${name} is a successfully deleted! please check the player list.`);
+      redirect('/palyer')
+    }
+
+    // console.log("Data is a", data);
+    
+  }
   return (
     <AlertDialog>
        <Button className="group  relative overflow-hidden rounded-2xl border border-red-500/30 bg-red-500/10 px-6 py-3 font-semibold text-red-400 backdrop-blur-xl transition-all duration-500 hover:scale-105 hover:border-red-500 hover:text-white hover:shadow-[0_0_25px_rgba(239,68,68,0.5)]">
@@ -34,7 +57,7 @@ export function DeleteButton() {
         variant="blur"
       >
         <AlertDialog.Container>
-          <AlertDialog.Dialog className="sm:max-w-[420px]">
+          <AlertDialog.Dialog className="sm:max-w-105">
             <AlertDialog.CloseTrigger />
             <AlertDialog.Header className="items-center text-center">
               <AlertDialog.Icon status="danger">
@@ -44,17 +67,16 @@ export function DeleteButton() {
             </AlertDialog.Header>
             <AlertDialog.Body>
               <p>
-                This action cannot be undone. All your data, settings, and content will be
-                permanently removed from our servers. The dramatic red backdrop emphasizes the
-                severity and irreversibility of this decision.
+                This name is a <span className="text-black font-bold text-2xl">{name}</span> All your data, settings, and content will be
+                permanently removed from our servers.
               </p>
             </AlertDialog.Body>
             <AlertDialog.Footer className="flex-col-reverse">
               <Button className="w-full" slot="close">
                 Keep Account
               </Button>
-              <Button className="w-full" slot="close" variant="danger">
-                Delete Forever
+              <Button onClick={delteHandle} className="w-full" slot="close" variant="danger">
+                Confirm Delete
               </Button>
             </AlertDialog.Footer>
           </AlertDialog.Dialog>

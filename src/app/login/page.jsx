@@ -12,11 +12,39 @@ import {
   FieldError,
   Description,
 } from "@heroui/react";
-import { DiChrome } from "react-icons/di";
 import { FaChrome } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
+import { authClient } from "@/lib/auth-client";
 
 const LoginPage = () => {
+  const router = useRouter()
   const [showPass, setShowPass] = useState(false);
+
+  
+    const onSubmit = async (e) => {
+      e.preventDefault();
+      // console.log('e is a e', e);
+  
+      const formData = new FormData(e.target);
+      const users = Object.fromEntries(formData.entries());
+      // console.log('New Player', users);
+      const { data, error } = await authClient.signIn.email({
+       
+        email : users.email,
+        password: users.password,
+        
+      });
+  
+      console.log({data, error});
+      if(data){
+        toast.success('login suecceessfull done')
+        router.push("/")
+      }if(error){
+        toast.error('login faild! please again try.')
+      }
+      
+    };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#050816] px-4 relative overflow-hidden">
@@ -50,7 +78,7 @@ const LoginPage = () => {
         </div>
 
         {/* Form */}
-        <Form className="space-y-5">
+        <Form onSubmit={onSubmit} className="space-y-5">
 
           {/* Email */}
           <TextField name="email" isRequired>

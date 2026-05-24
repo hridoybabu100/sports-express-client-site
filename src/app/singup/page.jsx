@@ -13,21 +13,46 @@ import {
 } from "@heroui/react";
 import { EyeOffIcon } from "lucide-react";
 import Image from "next/image";
+import { authClient } from "@/lib/auth-client";
+import { toast } from "react-toastify";
+import { redirect } from "next/navigation";
 
 const SingUpPage = () => {
   const [showPass, setShowPass] = useState(false);
   const [image, setImage] = useState("");
 
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    // console.log('e is a e', e);
+
+    const formData = new FormData(e.target);
+    const users = Object.fromEntries(formData.entries());
+    // console.log('New Player', users);
+    const { data, error } = await authClient.signUp.email({
+      name: users.name,
+      email : users.email,
+      password: users.password,
+      image : users.image,
+    });
+
+    // console.log({data, error});
+    if(data){
+      toast.success('registration suecceessfull complete')
+      redirect('/login')
+    }if(error){
+      toast.error('error! please again try.')
+    }
+    
+  };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#050816] px-4">
-      
       {/* Background Glow */}
       <div className="absolute top-0 left-0 h-72 w-72 bg-cyan-500/20 blur-3xl rounded-full"></div>
       <div className="absolute bottom-0 right-0 h-72 w-72 bg-blue-500/20 blur-3xl rounded-full"></div>
 
       {/* Card */}
       <div className="relative w-full max-w-2xl rounded-[30px] border border-white/10 bg-white/5 backdrop-blur-2xl p-6 md:p-10 shadow-2xl">
-
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-black text-white">
@@ -51,8 +76,10 @@ const SingUpPage = () => {
         </div>
 
         {/* Form */}
-        <Form className="grid grid-cols-1 md:grid-cols-2 gap-5">
-
+        <Form
+          onSubmit={onSubmit}
+          className="grid grid-cols-1 md:grid-cols-2 gap-5"
+        >
           {/* Name */}
           <TextField
             isRequired
@@ -85,16 +112,9 @@ const SingUpPage = () => {
           </TextField>
 
           {/* Image URL */}
-          <TextField
-            isRequired
-            name="image"
-          >
+          <TextField isRequired name="image">
             <Label className="text-white font-blod">Image URL</Label>
-            <Input
-              placeholder="Image link"
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
-            />
+            <Input placeholder="Image link" type="url" />
             <FieldError />
           </TextField>
 
@@ -135,7 +155,6 @@ const SingUpPage = () => {
 
           {/* Buttons */}
           <div className="col-span-1 md:col-span-2 flex flex-col md:flex-row gap-3 mt-2">
-            
             <Button
               type="submit"
               className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-semibold py-3 rounded-xl hover:scale-[1.02] transition"
