@@ -4,14 +4,15 @@ import {
   Star,
   MapPin,
   Calendar,
-  Activity,
   ArrowLeft,
+
 } from "lucide-react";
-import {Button} from "@heroui/react";
+import { Button } from "@heroui/react";
 
 import Link from "next/link";
 import { EditButton } from "@/components/EditButton";
 import { DeleteButton } from "@/components/DeleteButton";
+import PurchaseButton from "@/components/PurchaseButton";
 
 const Detailspage = async ({ params }) => {
   const { id } = await params;
@@ -144,7 +145,7 @@ const Detailspage = async ({ params }) => {
             <div className="flex flex-wrap gap-4 pt-4">
               <div className="flex flex-wrap items-center gap-4 pt-6">
                 {/* Go Back Button */}
-                <Link href={'/'}>
+                <Link href={"/"}>
                   <Button className="group relative overflow-hidden rounded-2xl border border-white/10 bg-white/5 px-6 py-3 font-semibold text-white backdrop-blur-xl transition-all duration-500 hover:scale-105 hover:border-white/30 hover:bg-white/10 hover:shadow-[0_0_20px_rgba(255,255,255,0.15)]">
                     {/* Shine Effect */}
                     <span className="absolute left-[-100%] top-0 h-full w-full bg-gradient-to-r from-transparent via-white/10 to-transparent transition-all duration-700 group-hover:left-[100%]"></span>
@@ -170,10 +171,12 @@ const Detailspage = async ({ params }) => {
                   </Button>
                 </Link>
                 {/* Edit Button */}
-             <EditButton player={player}></EditButton>
+                <EditButton player={player}></EditButton>
 
                 {/* Delete Button */}
-              <DeleteButton player={player}></DeleteButton>
+                <DeleteButton player={player}></DeleteButton>
+                {/* Purchase Button */}
+              <PurchaseButton player={player}></PurchaseButton>
               </div>
             </div>
           </div>

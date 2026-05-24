@@ -18,37 +18,39 @@ import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
 
 const LoginPage = () => {
-  const router = useRouter()
+  const router = useRouter();
   const [showPass, setShowPass] = useState(false);
 
-  
-    const onSubmit = async (e) => {
-      e.preventDefault();
-      // console.log('e is a e', e);
-  
-      const formData = new FormData(e.target);
-      const users = Object.fromEntries(formData.entries());
-      // console.log('New Player', users);
-      const { data, error } = await authClient.signIn.email({
-       
-        email : users.email,
-        password: users.password,
-        
-      });
-  
-      console.log({data, error});
-      if(data){
-        toast.success('login suecceessfull done')
-        router.push("/")
-      }if(error){
-        toast.error('login faild! please again try.')
-      }
-      
-    };
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    // console.log('e is a e', e);
+
+    const formData = new FormData(e.target);
+    const users = Object.fromEntries(formData.entries());
+    // console.log('New Player', users);
+    const { data, error } = await authClient.signIn.email({
+      email: users.email,
+      password: users.password,
+    });
+
+    console.log({ data, error });
+    if (data) {
+      toast.success("login suecceessfull done");
+      router.push("/");
+    }
+    if (error) {
+      toast.error("login faild! please again try.");
+    }
+  };
+
+  const googleLogin = async () => {
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-[#050816] px-4 relative overflow-hidden">
-
       {/* Background Glow */}
       <div className="absolute top-10 left-10 h-72 w-72 bg-cyan-500/20 blur-3xl rounded-full animate-pulse" />
       <div className="absolute bottom-10 right-10 h-72 w-72 bg-blue-500/20 blur-3xl rounded-full animate-pulse" />
@@ -68,8 +70,6 @@ const LoginPage = () => {
           </p>
         </div>
 
-      
-
         {/* Divider */}
         <div className="flex items-center gap-3 mb-5">
           <div className="h-px flex-1 bg-white/10" />
@@ -79,14 +79,10 @@ const LoginPage = () => {
 
         {/* Form */}
         <Form onSubmit={onSubmit} className="space-y-5">
-
           {/* Email */}
           <TextField name="email" isRequired>
             <Label className="text-white">Email</Label>
-            <Input
-              placeholder="john@example.com"
-              className="rounded-xl"
-            />
+            <Input placeholder="john@example.com" className="rounded-xl" />
             <FieldError />
           </TextField>
 
@@ -130,7 +126,6 @@ const LoginPage = () => {
           </motion.div>
         </Form>
 
-
         {/* Divider */}
         <div className="flex items-center gap-3 my-5">
           <div className="h-px flex-1 bg-white/10" />
@@ -138,9 +133,9 @@ const LoginPage = () => {
           <div className="h-px flex-1 bg-white/10" />
         </div>
 
-          {/* Google Login */}
-        <button className="w-full mt-5 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl transition mb-5">
-          <FaChrome size={18}  className="text-purple"/>
+        {/* Google Login */}
+        <button onClick={googleLogin} className="w-full mt-5 flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 text-white py-3 rounded-xl transition mb-5">
+          <FaChrome size={18} className="text-purple" />
           Continue with Google
         </button>
 

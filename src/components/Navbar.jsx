@@ -27,7 +27,7 @@ const navLinks = [
   { name: "Players", path: "/palyer" },
   { name: "Add-Player", path: "/add-player" },
   { name: "Profile", path: "/profile" },
-  { name: "Live Match", path: "/live" },
+  { name: "Purchase", path: "/purchase" },
 ];
 
 export default function Navbar() {
